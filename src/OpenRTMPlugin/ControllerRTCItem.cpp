@@ -15,7 +15,6 @@
 #include <cnoid/FileUtil>
 #include <cnoid/CorbaUtil>
 #include <fmt/format.h>
-#include <boost/filesystem.hpp>
 #include "gettext.h"
 
 using namespace std;

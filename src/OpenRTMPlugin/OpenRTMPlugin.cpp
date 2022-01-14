@@ -43,7 +43,6 @@
 #include <fmt/format.h>
 #include <rtm/ComponentActionListener.h>
 #include <set>
-#include <boost/filesystem.hpp>
 
 #include "LoggerUtil.h"
 
