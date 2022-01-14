@@ -23,7 +23,6 @@
 using namespace std;
 using namespace cnoid;
 using fmt::format;
-namespace filesystem = cnoid::stdx::filesystem;
 
 namespace {
 const bool TRACE_FUNCTIONS = false;
@@ -36,13 +35,13 @@ class RTComponentImpl
 public:
     RTC::RTObject_var rtcRef;
     RTC::RtcBase* rtc_;
-    filesystem::path modulePath;
+    cnoid::stdx::filesystem::path modulePath;
     Process rtcProcess;
     std::string componentName;
     MessageView* mv;
 
-    RTComponentImpl(const filesystem::path& modulePath, PropertyMap& prop);
-    void init(const filesystem::path& modulePath, PropertyMap& properties);
+    RTComponentImpl(const cnoid::stdx::filesystem::path& modulePath, PropertyMap& prop);
+    void init(const cnoid::stdx::filesystem::path& modulePath, PropertyMap& properties);
     bool createRTC(PropertyMap& properties);
     bool isValid() const;
     void setupModules(string& fileName, string& initFuncName, string& componentName, PropertyMap& properties);
@@ -98,7 +97,7 @@ RTCItem::RTCItem()
     baseDirectoryType.select(RTC_DIRECTORY);
     oldBaseDirectoryType = baseDirectoryType.which();
 
-    rtcDirectory = filesystem::path(executableTopDirectory()) / CNOID_PLUGIN_SUBDIR / "rtc";
+    rtcDirectory = cnoid::stdx::filesystem::path(executableTopDirectory()) / CNOID_PLUGIN_SUBDIR / "rtc";
 
     isActivationEnabled_ = false;
 }
@@ -269,7 +268,7 @@ bool RTCItem::restore(const Archive& archive)
     }
     string value;
     if (archive.read("module", value) || archive.read("moduleName", value)) {
-        filesystem::path path(archive.expandPathVariables(value));
+        cnoid::stdx::filesystem::path path(archive.expandPathVariables(value));
         moduleName = path.make_preferred().string();
     }
     if (archive.read("baseDirectory", value) || archive.read("RelativePathBase", value)) {
@@ -305,7 +304,7 @@ bool RTCItem::convertAbsolutePath()
                 mv->putln(_("Please save the project."));
                 return false;
             } else {
-                modulePath = filesystem::path(projectDir) / modulePath;
+                modulePath = cnoid::stdx::filesystem::path(projectDir) / modulePath;
             }
         }
     }
@@ -313,14 +312,14 @@ bool RTCItem::convertAbsolutePath()
 }
 
 
-RTComponent::RTComponent(const filesystem::path& modulePath, PropertyMap& prop)
+RTComponent::RTComponent(const cnoid::stdx::filesystem::path& modulePath, PropertyMap& prop)
 {
     DDEBUG("RTComponent::RTComponent");
     impl = new RTComponentImpl(modulePath, prop);
 }
 
 
-RTComponentImpl::RTComponentImpl(const filesystem::path& modulePath, PropertyMap& prop)
+RTComponentImpl::RTComponentImpl(const cnoid::stdx::filesystem::path& modulePath, PropertyMap& prop)
 {
     rtc_ = nullptr;
     rtcRef = RTC::RTObject::_nil();
@@ -337,7 +336,7 @@ RTComponent::~RTComponent()
 }
 
 
-void RTComponentImpl::init(const filesystem::path& modulePath_, PropertyMap& prop)
+void RTComponentImpl::init(const cnoid::stdx::filesystem::path& modulePath_, PropertyMap& prop)
 {
     DDEBUG("RTComponentImpl::init");
     mv = MessageView::instance();
@@ -350,7 +349,7 @@ bool RTComponentImpl::createRTC(PropertyMap& prop)
 {
     DDEBUG("RTComponentImpl::createRTC");
 
-    string moduleNameLeaf = modulePath.leaf().string();
+    string moduleNameLeaf = modulePath.filename().string();
     size_t i = moduleNameLeaf.rfind('.');
     if (i != string::npos) {
         componentName = moduleNameLeaf.substr(0, i);
@@ -360,7 +359,7 @@ bool RTComponentImpl::createRTC(PropertyMap& prop)
 
     string actualFilename;
 
-    if (filesystem::exists(modulePath)) {
+    if (cnoid::stdx::filesystem::exists(modulePath)) {
         actualFilename = getNativePathString(modulePath);
         if (modulePath.extension() == DLL_SUFFIX) {
             string initFunc(componentName + "Init");
@@ -369,13 +368,13 @@ bool RTComponentImpl::createRTC(PropertyMap& prop)
             createProcess(actualFilename, prop);
         }
     } else {
-        filesystem::path exePath(modulePath.string() + EXEC_SUFFIX);
-        if (filesystem::exists(exePath)) {
+        cnoid::stdx::filesystem::path exePath(modulePath.string() + EXEC_SUFFIX);
+        if (cnoid::stdx::filesystem::exists(exePath)) {
             actualFilename = getNativePathString(exePath);
             createProcess(actualFilename, prop);
         } else {
-            filesystem::path dllPath(modulePath.string() + DLL_SUFFIX);
-            if (filesystem::exists(dllPath)) {
+            cnoid::stdx::filesystem::path dllPath(modulePath.string() + DLL_SUFFIX);
+            if (cnoid::stdx::filesystem::exists(dllPath)) {
                 actualFilename = getNativePathString(dllPath);
                 string initFunc(componentName + "Init");
                 setupModules(actualFilename, initFunc, componentName, prop);

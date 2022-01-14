@@ -40,6 +40,7 @@ public:
     virtual double currentTime() const override;
     virtual bool isNoDelayMode() const override;
     virtual bool setNoDelayMode(bool on) override;
+    virtual std::string controllerName(void) const override;
 };
 
 }
@@ -182,9 +183,14 @@ bool BodyIoRTCItemImpl::isNoDelayMode() const
 
 bool BodyIoRTCItemImpl::setNoDelayMode(bool on)
 {
-    return self->setNoDelayMode(on);
+    self->setNoDelayMode(on);
+    return on;
 }
-        
+
+std::string BodyIoRTCItemImpl::controllerName(void) const
+{
+    return self->name();
+}
 
 bool BodyIoRTCItem::createRTC()
 {

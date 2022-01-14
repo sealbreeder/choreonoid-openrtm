@@ -7,6 +7,7 @@
 #include <cnoid/BodyMotion>
 #include <cnoid/ExecutablePath>
 #include <cnoid/FileUtil>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace cnoid;
@@ -74,7 +75,7 @@ RTC::ReturnCode_t SR1WalkControllerRTC::onActivated(RTC::UniqueId ec_id)
 {
     if(!qseq){
         string filename = getNativePathString(
-            boost::filesystem::path(shareDirectory())
+            cnoid::stdx::filesystem::path(shareDirectory())
             / "motion" / "SR1" / "SR1WalkPattern1.seq");
 
         BodyMotion motion;
