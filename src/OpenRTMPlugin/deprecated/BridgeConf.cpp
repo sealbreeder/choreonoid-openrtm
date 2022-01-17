@@ -15,7 +15,6 @@
 using namespace std;
 using namespace cnoid;
 namespace program_options = boost::program_options;
-namespace filesystem = cnoid::stdx::filesystem;
 using fmt::format;
 
 
@@ -159,7 +158,7 @@ void BridgeConf::parseOptions()
         vector<string> values = vmap["module"].as<vector<string> >();
         for(size_t i=0; i < values.size(); ++i){
             string modulePath( values[i] );
-            if(filesystem::path(modulePath).extension().empty()){
+            if(cnoid::stdx::filesystem::path(modulePath).extension().empty()){
                 modulePath += string( SUFFIX_SHARED_EXT );
             }
             addModuleInfo( modulePath );
@@ -319,7 +318,7 @@ void BridgeConf::addModuleInfo(const std::string& value)
     } else {
         ModuleInfo info;
         info.fileName = parameters[0];
-        info.componentName = filesystem::path(info.fileName).stem().string();
+        info.componentName = cnoid::stdx::filesystem::path(info.fileName).stem().string();
         if(parameters.size() == 1){
             info.initFuncName = info.componentName + "Init";
         } else {

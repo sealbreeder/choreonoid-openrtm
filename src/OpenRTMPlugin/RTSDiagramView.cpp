@@ -300,6 +300,7 @@ public:
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent* event);
     void wheelEvent(QWheelEvent* event);
     void keyPressEvent(QKeyEvent* event);
     void onnsViewItemSelectionChanged(const list<NamingContextHelper::ObjectInfo>& items);
@@ -316,6 +317,7 @@ public:
     void onRTSystemItemDetachedFromRoot();
     void setCurrentRTSItem(RTSystemItem* item);
     void updateView();
+    Signal<void(RTSComp*)> sigDoubleClickEvent;
     void checkStatus();
     void updateSetting();
     void updateRestoredView();
@@ -1037,6 +1039,27 @@ void RTSDiagramViewImpl::mouseMoveEvent(QMouseEvent* event)
 }
 
 
+void RTSDiagramViewImpl::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton) {
+
+
+        if (!selectionRTCs.empty()) {
+
+            sigDoubleClickEvent(selectionRTCs.front()->rtsComp);
+        }
+
+    }
+
+    QGraphicsView::mouseDoubleClickEvent(event);
+}
+
+SignalProxy<void(RTSComp*)> RTSDiagramView::sigDoubleClickEvent()
+{
+    return impl->sigDoubleClickEvent;
+}
+
+
 void RTSDiagramViewImpl::mouseReleaseEvent(QMouseEvent *event)
 {
     QPointF pos = mapToScene(event->pos());
@@ -1507,6 +1530,11 @@ void RTSDiagramViewImpl::checkStatus()
         it->second->stateCheck();
     }
 }
+
+void RTSDiagramViewImpl::updateSetting()
+{
+}
+
 
 void RTSDiagramViewImpl::updateView()
 {

@@ -33,6 +33,13 @@ set(public_headers
   RTCItem.h
   BodyIoRTCItem.h
   ControllerRTCItem.h
+  OpenRTMPlugin.h
+  ProfileHandler.h
+  RTSystem.h
+  RTSystemItem.h
+  RTSCommonUtil.h
+  RTCWrapper.h
+  RTSDiagramView.h
   deprecated/BodyRTCItem.h
   )
 
@@ -112,3 +119,6 @@ endif()
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/${CHOREONOID_PLUGIN_SUBDIR}/rtc)
 install(DIRECTORY ${PROJECT_BINARY_DIR}/${CHOREONOID_PLUGIN_SUBDIR}/rtc
   DESTINATION ${CHOREONOID_PLUGIN_SUBDIR}/rtc FILES_MATCHING PATTERN "*" EXCLUDE)
+
+
+add_subdirectory(pugixml)
