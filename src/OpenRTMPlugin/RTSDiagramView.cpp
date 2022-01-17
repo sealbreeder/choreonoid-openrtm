@@ -18,6 +18,7 @@
 #include <cnoid/RootItem>
 #include <cnoid/SimulatorItem>
 #include <cnoid/AppConfig>
+#include <cnoid/Archive>
 #include <QGraphicsLineItem>
 #include <QGraphicsOpacityEffect>
 #include <QGraphicsScene>

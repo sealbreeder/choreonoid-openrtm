@@ -1,4 +1,4 @@
-
+﻿
 #include "RTSNameServerView.h"
 #include "RTSCommonUtil.h"
 #include "OpenRTMUtil.h"
@@ -11,6 +11,8 @@
 #include <cnoid/CheckBox>
 #include <cnoid/ComboBox>
 #include <cnoid/MessageView>
+#include <cnoid/Archive>
+#include <cnoid/EigenArchive>
 #include <rtm/CORBA_IORUtil.h>
 #include <QLabel>
 #include <QGridLayout>
@@ -116,7 +118,8 @@ private:
         vector<NamingContextHelper::ObjectPath> pathList);
     void onSelectionChanged();
 
-    void showServerInfo();    void connectNameServer();
+    void showServerInfo();
+    void connectNameServer();
     void cleatZombee();
     void checkZombee(RTSVItem* parent);
 };
@@ -237,7 +240,8 @@ RTSNameServerViewImpl::RTSNameServerViewImpl(RTSNameServerView* self)
     vbox->addWidget(&treeWidget, 1);
     self->setLayout(vbox);
     //
-    showServerInfo();}
+    showServerInfo();
+}
 
 
 RTSNameServerView::~RTSNameServerView()

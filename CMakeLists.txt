@@ -43,6 +43,12 @@ else()
     add_compile_options(-std=c++14)
   endif()
 
+  if(MSVC)
+    if(${MSVC_VERSION} GREATER_EQUAL 1910)
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
+    endif()
+  endif()
+
   option(INSTALL_SDK "Installing SDK files" ON)
   set(CHOREONOID_INSTALL_SDK ${INSTALL_SDK})
 
@@ -101,7 +107,7 @@ else()
   if(MSVC)
     unset(camera_library)
     foreach(dir ${OPENRTM_LIBRARY_DIRS})
-      file(GLOB libs "${dir}/rtmCamera*.lib")
+      file(GLOB libs "${dir}/rtmCamera*vc*.lib")
       foreach(lib ${libs})
         if(lib MATCHES "(rtmCamera.*d)\\.lib$")
           list(APPEND camera_library debug;${CMAKE_MATCH_1})
@@ -115,6 +121,34 @@ else()
     set(OPENRTM_CAMERA_LIBRARY rtmCamera)
   endif()
 endif()
+
+
+
+
+if(IS_MASTER_PROJECT)
+  if(MSVC)
+    set(USE_BUNDLED_LIBJPEG_DEFAULT ON)
+  else()
+    set(USE_BUNDLED_LIBJPEG_DEFAULT OFF)
+  endif()
+  option(USE_BUNDLED_LIBJPEG "Use the JPEG library bunded with Choreonoid" ${USE_BUNDLED_LIBJPEG_DEFAULT})
+  if(NOT USE_BUNDLED_LIBJPEG)
+    find_package(JPEG)
+  endif()
+  if(NOT JPEG_FOUND)
+    set(JPEG_LIBRARY jpeg)
+  endif()
+endif()
+set(OPENRTM_CAMERA_LIBRARY ${OPENRTM_CAMERA_LIBRARY} ${JPEG_LIBRARY})
+
+
+if(MSVC)
+  file(GLOB rtcdlls "${OPENRTM_BIN_PATH}/RTC*vc*.dll")
+  file(GLOB rtmcameradlls "${OPENRTM_BIN_PATH}/rtmCamera*vc*.dll")
+  file(GLOB rtmmanipulatordlls "${OPENRTM_BIN_PATH}/rtmManipulator*vc*.dll")
+  install(PROGRAMS ${rtcdlls} ${rtmcameradlls} ${rtmmanipulatordlls} DESTINATION ${CHOREONOID_BIN_SUBDIR} COMPONENT openrtmlib)
+endif()
+
 
 if(NOT IS_MASTER_PROJECT)
   set(OPENRTM_DEFINITIONS ${OPENRTM_DEFINITIONS} PARENT_SCOPE)

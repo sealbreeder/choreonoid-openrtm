@@ -9,6 +9,7 @@
 #include <cnoid/Link>
 #include <cnoid/EigenUtil>
 #include <cnoid/FileUtil>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace cnoid;
@@ -70,7 +71,7 @@ RTC::ReturnCode_t PA10PickupControllerRTC::onInitialize()
     addOutPort("u_out", m_torqueOut);
 
     string modelfile = getNativePathString(
-        boost::filesystem::path(shareDirectory()) / "model/PA10/PA10.body");
+        cnoid::stdx::filesystem::path(shareDirectory()) / "model/PA10/PA10.body");
             
     BodyLoader loader;
     loader.setMessageSink(cout);

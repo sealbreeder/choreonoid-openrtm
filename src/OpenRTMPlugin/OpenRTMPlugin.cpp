@@ -47,11 +47,11 @@
 #include "LoggerUtil.h"
 
 #include "gettext.h"
+#include "exportdecl.h"
 
 using namespace std;
 using namespace cnoid;
 using fmt::format;
-namespace filesystem = boost::filesystem;
 
 namespace {
 
@@ -110,7 +110,7 @@ public:
         if (RTC::ExecutionContextFactory::instance().addFactory(
             name,
             ::coil::Creator<::RTC::ExecutionContextBase, ExecutionContextType>,
-            ::coil::Destructor<::RTC::ExecutionContextBase, ExecutionContextType>) == 0) {
+            ::coil::Destructor<::RTC::ExecutionContextBase, ExecutionContextType>) == coil::FactoryReturn::OK) {
 #endif
             mv->putln(format(_("{} has been registered."), name));
         } else {
@@ -146,7 +146,7 @@ public:
         }
         DDEBUG_V("configFile : %s", configFile.c_str());
 
-        bool isConfFileSpecified = filesystem::exists(configFile);
+        bool isConfFileSpecified = cnoid::stdx::filesystem::exists(configFile);
 
         const char* argv[] = {
             "choreonoid",
@@ -368,7 +368,8 @@ public:
 
         cnoid::deleteUnmanagedRTCs();
 
-        manager->shutdown();
+        //manager->shutdown();
+        manager->terminate();
         manager->unloadAll();
 
         return true;

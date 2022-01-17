@@ -20,7 +20,6 @@
 using namespace std;
 using namespace cnoid;
 using fmt::format;
-namespace filesystem = boost::filesystem;
 
 namespace {
 
@@ -64,7 +63,7 @@ public:
     };
     Selection baseDirectoryType;
 
-    filesystem::path rtcDirectory;
+    cnoid::stdx::filesystem::path rtcDirectory;
 
     Selection execContextType;
     bool useOnlySimulationExecutionContext = false;
@@ -121,7 +120,7 @@ ControllerRTCItemImpl::ControllerRTCItemImpl(ControllerRTCItem* self)
     baseDirectoryType.setSymbol(PROJECT_DIRECTORY, N_("Project directory"));
     baseDirectoryType.select(RTC_DIRECTORY);
 
-    rtcDirectory = filesystem::path(executableTopDirectory()) / CNOID_PLUGIN_SUBDIR / "rtc";
+    rtcDirectory = cnoid::stdx::filesystem::path(executableTopDirectory()) / CNOID_PLUGIN_SUBDIR / "rtc";
 
     execContextType.setSymbol(SIMULATION_EXECUTION_CONTEXT,  N_("SimulationExecutionContext"));
     execContextType.setSymbol(SIMULATION_PERIODIC_EXECUTION_CONTEXT,  N_("SimulationPeriodicExecutionContext"));
@@ -192,14 +191,14 @@ void ControllerRTCItem::setRTCModule(const std::string& name)
 void ControllerRTCItemImpl::setRTCModule(const std::string& name)
 {
     if(name != moduleNameProperty){
-        filesystem::path modulePath(name);
+        cnoid::stdx::filesystem::path modulePath(name);
         if(modulePath.is_absolute()){
             baseDirectoryType.select(NO_BASE_DIRECTORY);
             if(modulePath.parent_path() == rtcDirectory){
                 baseDirectoryType.select(RTC_DIRECTORY);
                 modulePath = modulePath.filename();
             } else {
-                filesystem::path projectDir(ProjectManager::instance()->currentProjectDirectory());
+                cnoid::stdx::filesystem::path projectDir(ProjectManager::instance()->currentProjectDirectory());
                 if(!projectDir.empty() && (modulePath.parent_path() == projectDir)){
                     baseDirectoryType.select(PROJECT_DIRECTORY);
                     modulePath = modulePath.filename();
@@ -298,7 +297,7 @@ std::string ControllerRTCItemImpl::getModuleFilename()
         return string();
     }
     
-    filesystem::path path(moduleNameProperty);
+    cnoid::stdx::filesystem::path path(moduleNameProperty);
 
     moduleName = path.stem().string();
     
@@ -308,7 +307,7 @@ std::string ControllerRTCItemImpl::getModuleFilename()
         } else if(baseDirectoryType.is(PROJECT_DIRECTORY)){
             string projectDir = ProjectManager::instance()->currentProjectDirectory();
             if(!projectDir.empty()){
-                path = filesystem::path(projectDir) / path;
+                path = cnoid::stdx::filesystem::path(projectDir) / path;
             } else {
                 mv->putln(
                     format(_("The rtc of {} cannot be generated because the project directory "
@@ -326,7 +325,7 @@ std::string ControllerRTCItemImpl::getModuleFilename()
         path += DLL_EXTENSION;
     }
         
-    if(filesystem::exists(path)){
+    if(cnoid::stdx::filesystem::exists(path)){
         return path.string();
     } else {
         mv->putln(
@@ -685,7 +684,7 @@ bool ControllerRTCItemImpl::restore(const Archive& archive)
     DDEBUG("ControllerRTCItemImpl::restore");
     string value;
     if(archive.read("module", value) || archive.read("moduleName", value)){
-        filesystem::path path(archive.expandPathVariables(value));
+        cnoid::stdx::filesystem::path path(archive.expandPathVariables(value));
         moduleNameProperty = path.make_preferred().string();
     }
     if(archive.read("baseDirectory", value) || archive.read("pathBaseType", value)){
