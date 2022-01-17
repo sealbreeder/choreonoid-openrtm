@@ -32,7 +32,6 @@ using namespace std;
 using namespace cnoid;
 using namespace RTC;
 using fmt::format;
-namespace filesystem = cnoid::stdx::filesystem;
 
 namespace {
 
@@ -96,7 +95,7 @@ public:
     std::string confFileName;
     std::string instanceName;
     Selection baseDirectoryType;
-    filesystem::path rtcDirectory;
+    cnoid::stdx::filesystem::path rtcDirectory;
     MessageView* mv;
 
 #ifdef ENABLE_SIMULATION_PROFILING
@@ -176,7 +175,7 @@ BodyRTCItemImpl::BodyRTCItemImpl(BodyRTCItem* self)
     baseDirectoryType.setSymbol(BodyRTCItem::RTC_DIRECTORY, N_("RTC directory"));
     baseDirectoryType.setSymbol(BodyRTCItem::PROJECT_DIRECTORY, N_("Project directory"));
     baseDirectoryType.select(BodyRTCItem::RTC_DIRECTORY);
-    rtcDirectory = filesystem::path(executableTopDirectory()) / CNOID_PLUGIN_SUBDIR / "rtc";
+    rtcDirectory = cnoid::stdx::filesystem::path(executableTopDirectory()) / CNOID_PLUGIN_SUBDIR / "rtc";
 
     executionCycleProperty = 0.0;
 }
@@ -220,12 +219,12 @@ void BodyRTCItemImpl::createRTC(BodyPtr body)
 
     bridgeConf = new BridgeConf();
 
-    filesystem::path projectDir(ProjectManager::instance()->currentProjectDirectory());
+    cnoid::stdx::filesystem::path projectDir(ProjectManager::instance()->currentProjectDirectory());
 
     if(configMode.is(BodyRTCItem::CONF_ALL_MODE)){
         setdefaultPort(body);
     } else if(configMode.is(BodyRTCItem::CONF_FILE_MODE)){
-        filesystem::path confPath;
+        cnoid::stdx::filesystem::path confPath;
         if(!confFileName.empty()){
             confPath = confFileName;
         } else if(!moduleName.empty()){
@@ -279,7 +278,7 @@ void BodyRTCItemImpl::createRTC(BodyPtr body)
             prop["exec_cxt.periodic.type"] = "ChoreonoidExecutionContext";
             prop["exec_cxt.periodic.rate"] = "1000000";
 
-            filesystem::path modulePath(moduleName);
+            cnoid::stdx::filesystem::path modulePath(moduleName);
             if(!modulePath.is_absolute()){
                 if(baseDirectoryType.is(BodyRTCItem::RTC_DIRECTORY)){
                     modulePath = rtcDirectory / modulePath;
@@ -628,14 +627,14 @@ void BodyRTCItemImpl::setControllerModule(const std::string& name)
 {
     if(name != moduleName){
 
-        filesystem::path modulePath(name);
+        cnoid::stdx::filesystem::path modulePath(name);
         if(modulePath.is_absolute()){
             baseDirectoryType.select(BodyRTCItem::NO_BASE_DIRECTORY);
             if(modulePath.parent_path() == rtcDirectory){
                 baseDirectoryType.select(BodyRTCItem::RTC_DIRECTORY);
                 modulePath = modulePath.filename();
             } else {
-                filesystem::path projectDir(ProjectManager::instance()->currentProjectDirectory());
+                cnoid::stdx::filesystem::path projectDir(ProjectManager::instance()->currentProjectDirectory());
                 if(!projectDir.empty() && (modulePath.parent_path() == projectDir)){
                     baseDirectoryType.select(BodyRTCItem::BodyRTCItem::PROJECT_DIRECTORY);
                     modulePath = modulePath.filename();
@@ -824,11 +823,11 @@ bool BodyRTCItemImpl::restore(const Archive& archive)
 {
     string value;
     if(archive.read("moduleName", value)){
-        filesystem::path path(archive.expandPathVariables(value));
+        cnoid::stdx::filesystem::path path(archive.expandPathVariables(value));
         moduleName = getNativePathString(path);
     }
     if(archive.read("confFileName", value)){
-        filesystem::path path(archive.expandPathVariables(value));
+        cnoid::stdx::filesystem::path path(archive.expandPathVariables(value));
         confFileName = getNativePathString(path);
     }
     if(archive.read("configurationMode", value)){

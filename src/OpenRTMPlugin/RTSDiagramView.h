@@ -8,13 +8,16 @@
 
 #include <cnoid/View>
 #include <cnoid/Dialog>
+#include <cnoid/CorbaUtil>
+#include "exportdecl.h"
 
 using namespace cnoid;
 
 namespace cnoid {
 class RTSDiagramViewImpl;
+class RTSComp;
 
-class RTSDiagramView : public View
+class CNOID_EXPORT RTSDiagramView : public View
 {
     Q_OBJECT
 
@@ -24,6 +27,8 @@ public:
 
     RTSDiagramView();
     virtual ~RTSDiagramView();
+
+    SignalProxy<void(RTSComp*)> sigDoubleClickEvent();
 
 public Q_SLOTS:
     void onRTSCompSelectionChange();
