@@ -29,7 +29,7 @@ SimulationExecutionContext::~SimulationExecutionContext()
 }
 
 
-void SimulationExecutionContext::tick() throw (CORBA::SystemException)
+void SimulationExecutionContext::tick()
 {
 #if defined(OPENRTM_VERSION11)
     std::for_each(m_comps.begin(), m_comps.end(), invoke_worker());
@@ -46,7 +46,6 @@ int SimulationExecutionContext::svc(void)
 
 
 RTC::ReturnCode_t SimulationExecutionContext::activate_component(RTC::LightweightRTObject_ptr comp)
-throw (CORBA::SystemException)
 {
 #if defined(OPENRTM_VERSION11)
 
@@ -93,7 +92,6 @@ throw (CORBA::SystemException)
 
 
 RTC::ReturnCode_t SimulationExecutionContext::deactivate_component(RTC::LightweightRTObject_ptr comp)
-throw (CORBA::SystemException)
 {
 #if defined(OPENRTM_VERSION11)
 
@@ -146,7 +144,6 @@ throw (CORBA::SystemException)
 
 
 RTC::ReturnCode_t SimulationExecutionContext::reset_component(RTC::LightweightRTObject_ptr comp)
-throw (CORBA::SystemException)
 {
 #if defined(OPENRTM_VERSION11)
 

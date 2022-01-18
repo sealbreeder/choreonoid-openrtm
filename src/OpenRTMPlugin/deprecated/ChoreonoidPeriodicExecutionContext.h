@@ -30,7 +30,7 @@ class ChoreonoidPeriodicExecutionContext : public virtual RTC_exp::PeriodicExecu
 public:
     ChoreonoidPeriodicExecutionContext();
     virtual ~ChoreonoidPeriodicExecutionContext(void);
-    virtual RTC::ReturnCode_t deactivate_component(RTC::LightweightRTObject_ptr comp) throw (CORBA::SystemException);
+    virtual RTC::ReturnCode_t deactivate_component(RTC::LightweightRTObject_ptr comp) override;
 };
 
 }

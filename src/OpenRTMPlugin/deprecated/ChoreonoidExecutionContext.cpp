@@ -30,7 +30,7 @@ ChoreonoidExecutionContext::~ChoreonoidExecutionContext()
 }
 
 
-void ChoreonoidExecutionContext::tick() throw (CORBA::SystemException)
+void ChoreonoidExecutionContext::tick()
 {
 #if defined(OPENRTM_VERSION11)
     std::for_each(m_comps.begin(), m_comps.end(), invoke_worker());
@@ -47,7 +47,6 @@ int ChoreonoidExecutionContext::svc(void)
 
 
 RTC::ReturnCode_t ChoreonoidExecutionContext::deactivate_component(RTC::LightweightRTObject_ptr comp)
-    throw (CORBA::SystemException)
 {
 #if defined(OPENRTM_VERSION11)
     RTC_TRACE(("deactivate_component()"));
