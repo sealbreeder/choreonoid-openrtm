@@ -9,18 +9,17 @@
 #include <cnoid/ConnectionSet>
 #include <cnoid/ThreadPool>
 #include <rtm/idl/InterfaceDataTypes.hh>
+#include <rtm/idl/CameraCommonInterface.hh>
+#include <cnoid/corba/PointCloud.hh>
+#include <rtm/DataOutPort.h>
+#include <rtm/DataInPort.h>
 
 #ifdef _WIN32
-#include <rtm/idl/CameraCommonInterface.hh>
 extern "C" {
 #define XMD_H
 #include <jpeglib.h>
 }
 #else
-#include <rtm/ext/CameraCommonInterface.hh>
-#include <cnoid/corba/PointCloud.hh>
-#include <rtm/DataOutPort.h>
-#include <rtm/DataInPort.h>
 #include <jpeglib.h>
 #endif
 

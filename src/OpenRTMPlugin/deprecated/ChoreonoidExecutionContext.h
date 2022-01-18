@@ -36,9 +36,9 @@ class ChoreonoidExecutionContext : public RTC::OpenHRPExecutionContext
 public:
     ChoreonoidExecutionContext();
     virtual ~ChoreonoidExecutionContext(void);
-    virtual void tick(void) throw (CORBA::SystemException);
+    virtual void tick(void) override;
     virtual int svc(void);
-    virtual RTC::ReturnCode_t deactivate_component(RTC::LightweightRTObject_ptr comp) throw (CORBA::SystemException);
+    virtual RTC::ReturnCode_t deactivate_component(RTC::LightweightRTObject_ptr comp) override;
 };
 
 }

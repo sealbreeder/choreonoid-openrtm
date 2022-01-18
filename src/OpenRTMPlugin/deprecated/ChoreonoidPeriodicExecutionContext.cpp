@@ -25,7 +25,6 @@ ChoreonoidPeriodicExecutionContext::~ChoreonoidPeriodicExecutionContext()
 
 
 RTC::ReturnCode_t ChoreonoidPeriodicExecutionContext::deactivate_component(RTC::LightweightRTObject_ptr comp)
-    throw (CORBA::SystemException)
 {
 #if defined(OPENRTM_VERSION11)
     RTC_TRACE(("deactivate_component()"));
