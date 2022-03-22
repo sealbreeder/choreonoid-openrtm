@@ -6,6 +6,8 @@ This software archive includes a Chorenoid plugin and OpenRTM modules that enabl
 
 Note that this software is experimental at the moment, and the implementation is not yet mature enough. Please be aware of this when you use this software.
 
+- https://openrtm.org/openrtm/ja/doc/developersguide/advanced_rt_system_programming/choreonoid_openrtm_plugin
+
 ## Requirements
 
 The software modules of Choreonoid-OpenRTM can be built and executed with [the latest Choreonoid development version (which will be released as version 1.8)](https://github.com/choreonoid/choreonoid).
