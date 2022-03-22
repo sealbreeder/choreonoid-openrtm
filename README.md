@@ -13,20 +13,24 @@ Note that this software is experimental at the moment, and the implementation is
 The software modules of Choreonoid-OpenRTM can be built and executed with [the latest Choreonoid development version (which will be released as version 1.8)](https://github.com/choreonoid/choreonoid).
 In addition to it, you need the following combinations of operating system and OpenRTM version:
 
-1. Ubuntu 18.04 + OpenRTM-aist 1.2.1
-2. Ubuntu 16.04 + OpenRTM-aist 1.1.2 (with a bug fix patch)
-
-The current latest version of OpenRTM-aist is version 1.2.1, but there are some problems when it is used with Choreonoid-OpenRTM. (The problems are reported at https://discourse.choreonoid.org/t/openrtm-aist-1-2-0/273 in Japanese.)
-
-OpenRTM 1.1.2 is more stable than 1.2.1 when it is used with Choreonoid-OpenRTM. In that sense, it is recommended to use OpenRTM 1.1.2. However, OpenRTM 1.1.2 seems to be available only on Ubuntu 16.04. In addition to that, OpenRTM 1.1.2 has some fatal bugs that need to be fixed. How to fix the bugs is described in the next section.
-
-Choreonoid-OpenRTM is also available for Windows. Although this document does not describe the details, you can use basically the same method as described below to build the system on Windows.
+1. Windows 10 + OpenRTM-aist 2.0.0
+2. Ubuntu 20.04 + OpenRTM-aist 2.0.0
+3. Ubuntu 18.04 + OpenRTM-aist 2.0.0
 
 ## Installation of OpenRTM-aist
 
 First of all, you need to install OpenRTM-aist.
 
-If you use OpenRTM-aist 1.1.2, you have to fix its bugs, which sometimes cause a crash of an RTC or Choreonoid. The cause of the bugs is contained in a header file called "OutPort.h" of OpenRTM-aist. Although any bug fix version of 1.1.x has not been released officially, you can fix the bugs by updating the header file. The fixed "OutPort.h" is contained in the "misc" directory of Choreonoid-OpenRTM's source repository. To fix the header file, please copy the file to the "include/openrtm-1.1/rtm" of OpenRTM-aist's installation directory.
+```
+sudo apt install libomniorb4-dev omniidl omniorb-nameserver
+git clone https://github.com/OpenRTM/OpenRTM-aist
+cd OpenRTM-aist
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release -- -j$(nproc)
+sudo cmake --build . --config Release --target install
+```
 
 ## Build and install Choreonoid-OpenRTM
 
