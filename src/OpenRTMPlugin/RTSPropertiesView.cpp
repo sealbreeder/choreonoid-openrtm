@@ -23,6 +23,7 @@
 
 #include "LoggerUtil.h"
 #include "gettext.h"
+#include <cnoid/src/Body/ControllerIO.h>
 
 using namespace RTC;
 using namespace cnoid;

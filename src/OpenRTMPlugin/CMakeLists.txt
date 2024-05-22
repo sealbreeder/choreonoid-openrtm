@@ -105,7 +105,7 @@ choreonoid_add_plugin(${plugin}
 if(IS_MASTER_PROJECT)
   target_compile_definitions(${plugin} PUBLIC ${CHOREONOID_QT_COMPILE_DEFINITIONS})
   target_link_libraries(${plugin}
-    CnoidBodyIoRTC
+    PUBLIC CnoidBodyIoRTC
     ${OPENRTM_LIBRARIES} ${CHOREONOID_CORBA_PLUGIN_LIBRARIES} ${CHOREONOID_BODY_PLUGIN_LIBRARIES})
 else()
   target_link_libraries(${plugin}
